@@ -140,8 +140,6 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
                 '{n.StartDate}', 
                 '{n.EndDate}'
             )";
-
-                // Thực thi truy vấn SQL không an toàn
                 db.Database.ExecuteSqlCommand(sql);
             }
             else
