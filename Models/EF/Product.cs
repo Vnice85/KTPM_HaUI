@@ -10,6 +10,7 @@
     [Table("Product")]
     public partial class Product
     {
+       
         //[DatabaseGenerated(DatabaseGeneratedOption.None)]
         [DisplayName("Mã sản phẩm")]
         public int ProductId { get; set; }

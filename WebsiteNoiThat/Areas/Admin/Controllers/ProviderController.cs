@@ -26,13 +26,13 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [HasCredential(RoleId = "ADD_PROVIDER")]
+    //    [HasCredential(RoleId = "ADD_PROVIDER")]
         public ActionResult Add()
         {
             return View();
         }
         [HttpPost]
-        [HasCredential(RoleId = "ADD_PROVIDER")]
+       // [HasCredential(RoleId = "ADD_PROVIDER")]
         public ActionResult Add(Provider n)
         {
             var model = db.Providers.SingleOrDefault(a => a.ProviderId == n.ProviderId);
@@ -50,7 +50,7 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
 
         }
         [HttpGet]
-        [HasCredential(RoleId = "EDIT_PROVIDER")]
+     //   [HasCredential(RoleId = "EDIT_PROVIDER")]
         public ActionResult Edit(int ProviderId)
         {
             Provider a = db.Providers.SingleOrDefault(n => n.ProviderId == ProviderId);
@@ -64,7 +64,7 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        [HasCredential(RoleId = "EDIT_PROVIDER")]
+   //     [HasCredential(RoleId = "EDIT_PROVIDER")]
         public ActionResult Edit(Provider n)
         {
             if (ModelState.IsValid)
@@ -81,7 +81,7 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
 
 
         [HttpGet]
-        [HasCredential(RoleId = "DELETE_PROVIDER")]
+        //[HasCredential(RoleId = "DELETE_PROVIDER")]
         public ActionResult Delete(int id)
         {
             var model = db.Providers.Find(Convert.ToInt32(id));

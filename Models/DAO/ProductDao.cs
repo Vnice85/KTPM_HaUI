@@ -10,7 +10,7 @@ namespace Models.DAO
     public class ProductDao
     {
         
-         DBNoiThat db  = new DBNoiThat();
+       public  DBNoiThat db  = new DBNoiThat();
        
         public List<Product> ListSanPham()
         {

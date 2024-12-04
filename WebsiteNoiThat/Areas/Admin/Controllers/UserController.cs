@@ -11,7 +11,7 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
 {
     public class UserController : HomeController
     {
-        DBNoiThat db = new DBNoiThat();
+        public DBNoiThat db = new DBNoiThat();
         public ActionResult Index()
         {
             return View();

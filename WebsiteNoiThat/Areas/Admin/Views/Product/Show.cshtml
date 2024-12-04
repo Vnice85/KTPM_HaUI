@@ -42,7 +42,7 @@
                             <td style="text-align:center;">@item.Price.GetValueOrDefault(0).ToString("N0")₫</td>
                             <td>
                                 <a href="/Admin/Product/Edit?ProductId=@item.ProductId"><span class="fa fa-edit"></span></a>
-                                <a href="/Admin/Product/Delete?ProductId=@item.ProductId" onclick="return confirm('Xác nhận xoá?');"><span class="fa fa-trash-alt"></span></a>
+                                <a href="/Admin/Product/Delete?ProductId=@item.ProductId" @*onclick="return confirm('Xác nhận xoá?');"*@><span class="fa fa-trash-alt"></span></a>
                                 @*<div class="modal fade" id="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

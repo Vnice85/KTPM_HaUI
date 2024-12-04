@@ -14,7 +14,7 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
 {
     public class OrdersController : HomeController
     {
-        private DBNoiThat db = new DBNoiThat();
+        public DBNoiThat db = new DBNoiThat();
 
         [HasCredential(RoleId = "VIEW_ORDER")]
         public ActionResult Show()

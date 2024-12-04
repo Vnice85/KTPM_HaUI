@@ -1,27 +1,24 @@
 ﻿using Models.DAO;
 using Models.EF;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebsiteNoiThat.Common;
 using WebsiteNoiThat.Models;
-using System.Diagnostics;
 
 namespace WebsiteNoiThat.Areas.Admin.Controllers
 {
     public class ProductController : HomeController
     {
-        DBNoiThat db = new DBNoiThat();
+        public DBNoiThat db = new DBNoiThat();
 
-        [HasCredential(RoleId = "VIEW_PRODUCT")]
+        //[HasCredential(RoleId = "VIEW_PRODUCT")]
         public ActionResult Show()
         {
-            var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
-            ViewBag.username = session.Username;
+            //var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
+            //ViewBag.username = session.Username;
 
             var productViewModels = (from a in db.Products
                                      join b in db.Providers on a.ProviderId equals b.ProviderId
@@ -45,11 +42,14 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [HasCredential(RoleId = "ADD_PRODUCT")]
+        //[HasCredential(RoleId = "ADD_PRODUCT")]
         public ActionResult Add()
         {
-            var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
-            ViewBag.username = session.Username;
+            //var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
+            //if (session != null)
+            //{
+            //    ViewBag.username = session.Username;
+            //}
             ViewBag.ListCate = new SelectList(db.Categories.ToList(), "CategoryId", "Name");
             ViewBag.ListProvider = new SelectList(db.Providers.ToList(), "ProviderId", "Name");
             var model = new Product()
@@ -62,27 +62,24 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
             return View(model);
         }
 
+
+
+                                            // This is the function that i wanna test
+
         [HttpPost]
-        [HasCredential(RoleId = "ADD_PRODUCT")]
+        //[HasCredential(RoleId = "ADD_PRODUCT")]
         public ActionResult Add(Product n, HttpPostedFileBase UploadImage)
         {
-            var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
-            ViewBag.username = session.Username;
+            //var session = (UserLogin)Session[WebsiteNoiThat.Common.Commoncontent.user_sesion_admin];
+            //if (session != null)
+            //{
+            //    ViewBag.username = session.Username;
+            //}
             ViewBag.ListCate = new SelectList(db.Categories.ToList(), "CategoryId", "Name");
             ViewBag.ListProvider = new SelectList(db.Providers.ToList(), "ProviderId", "Name");
-
-            //var models = db.Products.SingleOrDefault(a => a.ProductId == n.ProductId);
-            //if (models != null)
-            //{
-            //    ModelState.AddModelError("ProductError", "Mã sản phẩm đã tồn tại!");
-            //    return View();
-            //}
-            //else
-            //{
             ModelState.Remove("Photo");
             if (ModelState.IsValid)
             {
-
                 if (UploadImage != null && UploadImage.ContentLength > 0)
                 {
                     var root = Server.MapPath("~/image/");
@@ -95,39 +92,60 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
                     ModelState.AddModelError("Photo", "Vui lòng chọn ảnh cho sản phẩm.");
                     return View();
                 }
-                var model = new Product();
-                model.Name = n.Name;
-                model.Photo = n.Photo;
-                model.Price = n.Price;
-                model.Quantity = n.Quantity;
-                model.CateId = n.CateId;
-                model.ProviderId = n.ProviderId;
-                if (n.Description == null || n.Description == string.Empty)
-                {
-                    model.Description = "Không có mô tả gì";
-                }
-                else
-                { model.Description = n.Description; }
+                //var model = new Product();
+                //model.Name = n.Name;
+                //model.Photo = n.Photo;
+                //if (n.Quantity < 0 || n.Price < 0)
+                //{
+                //    return View();
+                //}
+                //else
+                //{
+                //    model.Quantity = n.Quantity;
+                //    model.Price = n.Price;
+                //}
+                //model.CateId = n.CateId;
+                //model.ProviderId = n.ProviderId;
+                //model.Description = n.Description;
+                //if (n.Discount == 0)
+                //{
+                //    model.Discount = 0;
+                //    model.StartDate = DateTime.MinValue;
+                //    model.EndDate = DateTime.MinValue;
+                //}
+                //else
+                //{
+                //    if (n.StartDate < n.EndDate)
+                //    {
+                //        ModelState.AddModelError("EndDate", "Ngày kết thúc phải sau ngày bắt đầu.");
+                //        return View();
+                //    }
+                //    model.Discount = n.Discount;
+                //    model.StartDate = n.StartDate;
+                //    model.EndDate = n.EndDate;
+                //}
+                //db.Products.Add(model);
+                //db.SaveChanges();
+                string sql = $@"
+            INSERT INTO Products (Name, Photo, Quantity, Price, CateId, ProviderId, Description, Discount, StartDate, EndDate)
+            VALUES (
+                '{n.Name}', 
+                '{n.Photo}', 
+                {n.Quantity}, 
+                {n.Price}, 
+                {n.CateId}, 
+                {n.ProviderId}, 
+                '{n.Description}', 
+                {n.Discount}, 
+                '{n.StartDate}', 
+                '{n.EndDate}'
+            )";
 
-                if (n.Discount == null || n.Discount == 0)
-                {
-                    model.Discount = 0;
-                    model.StartDate = DateTime.MinValue;
-                    model.EndDate = DateTime.MinValue;
-                }
-                else
-                {
-                    model.Discount = n.Discount;
-                    model.StartDate = n.StartDate;
-                    model.EndDate = n.EndDate;
-                }
-              
-                db.Products.Add(model);
-                db.SaveChanges();
+                // Thực thi truy vấn SQL không an toàn
+                db.Database.ExecuteSqlCommand(sql);
             }
             else
             {
-
                 return View();
             }
             return RedirectToAction("Show");
@@ -221,14 +239,14 @@ namespace WebsiteNoiThat.Areas.Admin.Controllers
         //    ViewBag.username = session.Username;
         //    return View();
         //}
-        [HttpGet]
-        [HasCredential(RoleId = "DELETE_PRODUCT")]
-        public ActionResult Delete(int id)
+        //[HttpGet]
+        //[HasCredential(RoleId = "DELETE_PRODUCT")]
+        public ActionResult Delete(int ProductId)
         {
-            var model = db.Products.Find(Convert.ToInt32(id));
+            var model = db.Products.Find(Convert.ToInt32(ProductId));
             db.Products.Remove(model);
             db.SaveChanges();
-            return View();
+            return RedirectToAction("Show");
         }
 
         public ActionResult Menu()
